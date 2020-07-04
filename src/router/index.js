@@ -1,0 +1,44 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+const Home = () =>
+    import ('../views/home/Home')
+const Category = () =>
+    import ('../views/category/Category')
+const Cart = () =>
+    import ('../views/cart/Cart')
+const Me = () =>
+    import ('../views/me/Me')
+
+//安装插件
+Vue.use(VueRouter)
+
+//创建router
+const routes = [{
+        path: '',
+        redirect: '/home'
+    },
+    {
+        path: '/home',
+        component: Home
+    },
+    {
+        path: '/cart',
+        component: Cart
+    },
+    {
+        path: '/category',
+        component: Category
+    },
+    {
+        path: '/me',
+        component: Me
+    }
+]
+
+const router = new VueRouter({
+    routes,
+    mode: 'history'
+})
+
+export default router
