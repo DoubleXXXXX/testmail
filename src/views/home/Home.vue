@@ -1,13 +1,15 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-      <scroller class="content">
+      <scroller class="content" ref="scro" :probe-type="3" 
+        :pull-up-load="true" @scroll="contentScroll" @pullingUp="loadMore">
         <home-swiper :banners="banners"/>
         <recommend-view :recommends="recommends"/>
         <feature-view/>
         <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"/>
         <goods-list :goods="showGoods"/>
     </scroller>
+    <back-top @click.native="backClick" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -22,6 +24,7 @@ import Scroller from 'components/common/scroll/Scroller';
 
 import TabControl from 'components/content/tabControl/TabControl';
 import GoodsList from 'components/content/goods/GoodsList';
+import BackTop from 'components/content/backTop/BackTop';
 
 import {getHomeMultidata, getHomeGoods} from 'network/home'
 
@@ -34,7 +37,8 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
           FeatureView,
           TabControl,
           GoodsList,
-          Scroller
+          Scroller,
+          BackTop
         },
         data() {
           return {
@@ -45,7 +49,8 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
               'new': {page: 0, list: []},
               'sell': {page: 0, list: []}
             },
-            currentType: 'pop'
+            currentType: 'pop',
+            isShowBackTop: false
           }
         },
         computed: {
@@ -64,6 +69,17 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
           tabClick(index){
             this.currentType = Object.keys(this.goods)[index];
           },
+          backClick() {
+            this.$refs.scro.scrollTo(0,0,500);
+          },
+          contentScroll(position) {
+            this.isShowBackTop = -position.y > 1000
+          },
+          loadMore() {
+            this.getHomeGoods(this.currentType);
+            this.$refs.scro.scroller.refresh()
+
+          },
 
           /*网络请求相关的方法*/
           getHomeMultidata() {
@@ -77,6 +93,7 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
             getHomeGoods(type, page).then(res => {
               this.goods[type].list.push(...res.data.list);
               this.goods[type].page+=1;
+              this.$refs.scro.finishPullUp()
           })
           }
         }
@@ -102,12 +119,16 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
     top: 44px;
     z-index: 10;
   }
-  .content {
+  /*.content {
      position: absolute;
      top: 44px;
      bottom: 49px;
      left: 0;
      right: 0;
+     overflow: hidden;
+  }*/
+  .content {
+     height: calc(100% - 49px);
      overflow: hidden;
   }
 </style>

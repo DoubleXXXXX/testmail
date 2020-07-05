@@ -26,25 +26,36 @@
             probeType:{
                 type:Number,
                 default:0
+            },
+            pullUpLoad:{
+                type: Boolean,
+                default:false
             }
         },
         mounted() {
             this.scroller = new BScroll(this.$refs.wrapper, {
                 probeType:this.probeType,
+                pullUpLoad:this.pullUpLoad,
                 click: true
             })
-
+            //监听滚动位置
             this.scroller.on('scroll', (postion) => {
-                //console.log(postion);
+                // console.log(postion);
                 this.$emit('scroll', postion)
+            })
+            //监听上拉位置
+            this.scroller.on('pullingUp', () => {
+                this.$emit('pullingUp')
             })
 
         },
         methods:{
-            scrollTo(x, y, time=300) {
-                this.scroller.scrollTo(0, 0, time)
+            scrollTo(x=0, y=0, time=300) {
+                this.scroller.scrollTo(x, y, time)
             },
-
+            finishPullUp() {
+                this.scroller.finishPullUp()
+            }
         }
     }
 </script>
