@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "better-scroll": "^1.15.2",
     "cache-loader": "^4.1.0",
     "css-loader": "^3.6.0",
     "postcss-loader": "^3.0.0",

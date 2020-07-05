@@ -27,6 +27,7 @@
     .goods-item {
         padding-bottom: 40px;
         position: relative;
+        width: 47%;
     }
     .goods-item img {
         width: 100%;
@@ -38,6 +39,7 @@
         bottom: 5px;
         left: 0;
         right: 0;
+        margin: 0 5px;
         overflow: hidden;
         text-align: center;
     }
@@ -49,7 +51,7 @@
     }
     .goods-info .price {
         color: var(--color-high-text);
-        margin-left: 20px;
+        margin-right: 20px;
     }
     .goods-info .collect {
         position: relative;

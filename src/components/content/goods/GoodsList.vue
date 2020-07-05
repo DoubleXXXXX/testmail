@@ -24,5 +24,9 @@ import GoodsListItem from './GoodsListItem';
 </script>
 
 <style scoped>
-
+    .goods-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
 </style>
