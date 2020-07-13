@@ -26,6 +26,8 @@ import TabControl from 'components/content/tabControl/TabControl';
 import GoodsList from 'components/content/goods/GoodsList';
 import BackTop from 'components/content/backTop/BackTop';
 
+import {debounce} from 'common/utils';
+
 import {getHomeMultidata, getHomeGoods} from 'network/home'
 
     export default {
@@ -59,12 +61,24 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
           }
         },
         created() {
+          // 请求多个数据
           this.getHomeMultidata();
+          //请求商品数据
           this.getHomeGoods('pop');
           this.getHomeGoods('new');
           this.getHomeGoods('sell');
+
+        },
+        mounted() {
+          /* 防抖动refresh不要加载一个图片就调用一次 */
+          const refresh =  debounce(this.$refs.scro.refresh, 200);
+          //监听item中图片加载完成
+          this.$bus.$on('itemImageLoad', () => {
+            refresh();
+          })
         },
         methods: {
+          
           /* 事件监听的方法*/
           tabClick(index){
             this.currentType = Object.keys(this.goods)[index];
@@ -75,10 +89,9 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
           contentScroll(position) {
             this.isShowBackTop = -position.y > 1000
           },
+          //上拉加载更多
           loadMore() {
-            this.getHomeGoods(this.currentType);
-            this.$refs.scro.scroller.refresh()
-
+            this.getHomeGoods(this.currentType)
           },
 
           /*网络请求相关的方法*/
@@ -93,7 +106,8 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
             getHomeGoods(type, page).then(res => {
               this.goods[type].list.push(...res.data.list);
               this.goods[type].page+=1;
-              this.$refs.scro.finishPullUp()
+              //完成上拉加载更多
+              this.$refs.scro.finishPullUp();
           })
           }
         }
