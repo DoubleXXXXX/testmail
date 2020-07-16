@@ -1,6 +1,6 @@
 <template>
-    <div class="goods-item">
-        <img :src="goodsItem.show.img" alt="" @load="imageLoad">
+    <div class="goods-item" @click="itemClick">
+        <img :src="imgSrc" alt="" @load="imageLoad">
         <div class="goods-info">
             <p>{{goodsItem.title}}</p>
             <span class="price">{{goodsItem.price}}</span>
@@ -20,9 +20,18 @@
                 }
             }
         },
+        computed: {
+            //传过来的数据是首页的，还是推荐的，不同的图片地址不一样，后面这个是首页的
+            imgSrc() {
+                return this.goodsItem.image ||  this.goodsItem.show.img;
+            }
+        },
         methods: {
             imageLoad() {
                 this.$bus.$emit('itemImageLoad');
+            },
+            itemClick() {
+                this.$router.push('/detail/' + this.goodsItem.iid);
             }
         }
     }
