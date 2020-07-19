@@ -1,7 +1,7 @@
 //工具方法
 
 // 1. 函数防抖
-export function debounce(fn, delay) {
+export function debounce(fn, delay = 50) {
     let timer = null;
     return function(...reg) {
         if (timer) clearTimeout(timer);

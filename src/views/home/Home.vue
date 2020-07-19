@@ -27,10 +27,9 @@ import Scroller from 'components/common/scroll/Scroller';
 
 import TabControl from 'components/content/tabControl/TabControl';
 import GoodsList from 'components/content/goods/GoodsList';
-import BackTop from 'components/content/backTop/BackTop';
 
 import {debounce} from 'common/utils';
-import {itemLidtenerMixin} from 'common/mixin';
+import {itemLidtenerMixin, backTopMixin} from 'common/mixin';
 
 import {getHomeMultidata, getHomeGoods} from 'network/home'
 
@@ -43,10 +42,9 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
           FeatureView,
           TabControl,
           GoodsList,
-          Scroller,
-          BackTop
+          Scroller
         },
-        mixins: [itemLidtenerMixin],
+        mixins: [itemLidtenerMixin, backTopMixin],
         data() {
           return {
             banners: [],
@@ -57,7 +55,6 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
               'sell': {page: 0, list: []}
             },
             currentType: 'pop',
-            isShowBackTop: false,
             tabOffsetTop: 0,
             isTabFixed: false,
             saveY: 0,
@@ -73,12 +70,14 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
         },
         actived() {
           this.$refs.scro.refresh()
+          console.log('aaaaaaaaaaaaaaaaaaa');
           this.$refs.scro.scrollTo(0, this.saveY, 0)
           
         },
         deactived() {
           //保存Y值
           this.saveY = this.$refs.scrollTo.getScrollY()
+          console.log('bbbbbbbbbb');
           //取消全局事件监听
           this.$bus.$off('itemImageLoad', this.itemImgListener)
         },
@@ -103,12 +102,10 @@ import {getHomeMultidata, getHomeGoods} from 'network/home'
             this.$refs.tabControl1.currentIndex = index;
             this.$refs.tabControl2.currentIndex = index;
           },
-          backClick() {
-            this.$refs.scro.scrollTo(0,0,500);
-          },
+
           contentScroll(position) {
             //哦按段BackTop是否显示
-            this.isShowBackTop = -position.y > 1000;
+            this.listenShowBack(position);
             //决定tabControl是否吸顶（position：fixed）
             this.isTabFixed = (-position.y) > this.tabOffsetTop;
           },

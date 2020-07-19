@@ -1,25 +1,29 @@
 <template>
-  <div class="bottom-bar">
-    <div class="left">
-      <div class="item"><i class="icon service"></i><span>客服</span></div>
-      <div class="item"><i class="icon shop"></i><span>店铺</span></div>
-      <div class="item"><i class="icon select"></i><span>收藏</span></div>
-      <div class="item img" @click="changRoute">
-        <img src="~assets/img/tabbar/shopcart_active.svg" alt="">
-        <span class="count">{{ count }}</span>
-        <div>购物车</div>
+  <div id="detail_bottom_bar">
+    <div class="bottom_left">
+      <div class="service">
+        <i class="icon"></i>
+        <span>客服</span>
+      </div>
+      <div class="shop">
+        <i class="icon"></i>
+        <span>店铺</span>
+      </div>
+      <div class="collect">
+        <i class="icon"></i>
+        <span>收藏</span>
       </div>
     </div>
-    <div class="right category" @click="addCart">
-      <transition name="add-to-cart">
-        <div class="copy" v-show="isShow">+1</div>
-      </transition>
-      <div>加入购物车</div>
+    <div class="bottom_right">
+      <div class="cart" @click="addCart">
+        加入购物车
+      </div>
+      <div class="buy">
+        购买
+      </div>
     </div>
-    <div class="right buy" @click="buyClick"><div>立即购买</div></div>
   </div>
 </template>
-
 <script>
   export default {
     name: 'DetailBottomBar',
@@ -49,84 +53,53 @@
     },
   }
 </script>
-
 <style scoped>
-.bottom-bar {
-  height: 49px;
+#detail_bottom_bar {
+  font-size: 0.74rem;
   display: flex;
-  z-index: 999;
-}
-.left {
-  flex: 40%;
-  display: flex;
-}
-.left .item {
-  flex: 1;
-  font-size: 12px;
-  text-align: center;
-  position: relative;
-}
-.left .item .icon {
-  display: block;
-  width: 22px;
-  height: 22px;
-  margin: 6px auto 3px;
-  background: url("~assets/img/detail/detail_bottom.png") 0 0/100%;
-}
-.left .item .service {
-  background-position: 0 -54px;
-}
-.left .item .shop {
-  background-position: 0 -98px;
-}
-img {
-  width: 22px;
-  height: 22px;
-  margin: 6px auto 1px;
-  position: relative;
-}
-.img .count {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  width: 15px;
-  height: 15px;
-  line-height: 15px;
-  font-size: 12px;
-  text-align: center;
-  border-radius: 50%;
-  border: 1px solid var(--color-tint);
+  position: fixed;
   background-color: #fff;
-}
-
-.right {
-  flex: 18%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  position: relative;
-}
-.right>div {
-  width: 95%;
-  height: 24px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  height: 2.12rem;
   text-align: center;
-  padding: 5px 3px;
-  border-radius: 12px;
+  box-shadow: 0 -0.04rem 0.4rem gray;
 }
-.category>div {
-  background-color: yellow;
-  position: absolute;
-  z-index: 9;
+.bottom_left {
+  display: flex;
+  flex: 1;
 }
-.category>div.copy {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.bottom_left > div {
+  flex: 1;
+  border-right: 0.04rem solid rgba(128, 128, 128, 0.2);
 }
-.buy>div {
+.bottom_left .icon {
+  display: block;
+  background: url("~assets/images/detail/detail_bottom.png") 0 0/100%;
+  width: 1rem;
+  height: 1rem;
+  margin: 0.12rem auto;
+}
+.service .icon {
+  background-position: 0 -2.4rem;
+}
+.shop .icon {
+  background-position: 0 -4.5rem;
+}
+.bottom_right {
+  display: flex;
+  flex: 1;
+}
+.bottom_right > div {
+  flex: 1;
+  line-height: 2.12rem;
+}
+.cart {
+  background-color: rgb(255, 174, 0);
+}
+.buy {
   background-color: var(--color-tint);
-  color: #fff;
+  color: white;
 }
 </style>

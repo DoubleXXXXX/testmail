@@ -7,10 +7,19 @@ const Category = () =>
     import ('../views/category/Category')
 const Cart = () =>
     import ('../views/cart/Cart')
-const Me = () =>
-    import ('../views/me/Me')
+const Profile = () =>
+    import ('../views/profile/Profile')
 const Detail = () =>
     import ('../views/detail/Detail')
+
+const download = () =>
+    import ( /* webpackChunkName: "profile" */ 'views/profile/ChildrenViews/download/DownLoad.vue')
+const login = () =>
+    import ( /* webpackChunkName: "profile" */ 'views/profile/ChildrenViews/login/Login.vue')
+const message = () =>
+    import ( /* webpackChunkName: "profile" */ 'views/profile/ChildrenViews/messageBoard/MessageBoard.vue')
+const reward = () =>
+    import ( /* webpackChunkName: "profile" */ 'views/profile/ChildrenViews/reward/Reward.vue')
 
 //安装插件
 Vue.use(VueRouter)
@@ -33,8 +42,28 @@ const routes = [{
         component: Category
     },
     {
-        path: '/me',
-        component: Me
+        path: '/profile',
+        component: Profile,
+        children: [{
+                path: 'download',
+                component: download
+            },
+            {
+                path: 'login',
+                component: login
+            },
+            {
+                path: 'message',
+                component: message,
+                meta: {
+                    login: true
+                }
+            },
+            {
+                path: 'reward',
+                component: reward
+            },
+        ]
     },
     {
         path: '/detail/:iid',
